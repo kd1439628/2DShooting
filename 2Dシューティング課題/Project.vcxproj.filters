@@ -61,6 +61,12 @@
     <Filter Include="Src\Application\SceneChange\GameoverScene">
       <UniqueIdentifier>{25097f2e-e733-4bbf-a81e-372226315bed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\BaseChara\Player">
+      <UniqueIdentifier>{95c8f10e-876c-4e51-90b2-0ffc6a9c45bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\BaseChara\Enemies">
+      <UniqueIdentifier>{884c2b63-831f-44df-9572-f06d292f23ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
