@@ -1,19 +1,22 @@
 #include "main.h"
 #include "Scene.h"
 
+#include "BaseScene/GameScene/GameScene.h"
+#include "BaseScene/TitleScene/TitleScene.h"
+
 void Scene::Draw2D()
 {
-
+	m_nowScene->Draw();
 }
 
 void Scene::Update()
 {
-
+	m_nowScene->Update();
 }
 
 void Scene::Init()
 {
-
+	m_nowScene = std::make_shared<GameScene>();
 }
 
 void Scene::Release()

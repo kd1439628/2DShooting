@@ -1,16 +1,22 @@
 #pragma once
 
-class GameScene
+#include "../BaseScene.h"
+
+class Player;
+
+class GameScene :public BaseScene
 {
 public:
 
-	GameScene() {}
+	GameScene() { Init(); }
 	~GameScene() {}
 
-	void Init();
-	void Update();
-	void Draw();
-	void Release();
+	void Init()override;
+	void Update()override;
+	void Draw()override;
+	void Release()override;
+
+	std::shared_ptr<Player> m_player;
 
 private:
 

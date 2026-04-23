@@ -1,16 +1,18 @@
 #pragma once
 
-class TitleScene
+#include "../BaseScene.h"
+
+class TitleScene :public BaseScene
 {
 public:
 
-	TitleScene() {}
+	TitleScene() { Init(); }
 	~TitleScene() {}
 
-	void Init();
-	void Update();
-	void Draw();
-	void Release();
+	void Init()override;
+	void Update()override;
+	void Draw()override;
+	void Release()override;
 
 private:
 
