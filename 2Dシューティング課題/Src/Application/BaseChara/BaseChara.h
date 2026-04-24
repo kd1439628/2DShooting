@@ -9,11 +9,11 @@ public:
 
 	void Update();
 	void Draw();
-	void Init();
 
 protected:
 
 	void Release();
+	void Init();
 
 	KdTexture m_tex;
 	Math::Vector3 m_pos = {};

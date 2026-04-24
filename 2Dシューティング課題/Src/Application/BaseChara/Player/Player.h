@@ -6,15 +6,15 @@ class Player :public BaseChara
 {
 public:
 
-	Player() {}
+	Player() { Init(); }
 	~Player() { Release(); }
 
 	void Update();
 	void Draw();
-	void Init();
 
 private:
 
+	void Init();
 	void Release();
 
 };

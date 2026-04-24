@@ -7,14 +7,14 @@ class TitleScene :public BaseScene
 public:
 
 	TitleScene() { Init(); }
-	~TitleScene() {}
+	~TitleScene() { Release(); }
 
-	void Init()override;
 	void Update()override;
 	void Draw()override;
-	void Release()override;
 
 private:
 
+	void Init()override;
+	void Release()override;
 
 };

@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "../../BaseChara/Player/Player.h"
+#include "../SceneManager.h"
 
 void GameScene::Draw()
 {
@@ -8,6 +9,10 @@ void GameScene::Draw()
 
 void GameScene::Update()
 {
+	if (GetAsyncKeyState('Z') & 0x8000)
+	{
+		SceneManager::Instance().SetNextScene(SceneManager::SceneType::Title);
+	}
 	m_player->Update();
 }
 

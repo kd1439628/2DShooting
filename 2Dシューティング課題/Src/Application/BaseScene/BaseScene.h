@@ -7,11 +7,14 @@ public:
 	BaseScene() {}
 	virtual ~BaseScene() {}
 
-	virtual void Init();
 	virtual void Update();
 	virtual void Draw();
+	virtual void Init();
 	virtual void Release();
 
 private:
+
+
+
 };
 

@@ -29,8 +29,6 @@ void Player::Init()
 
 void Player::Draw()
 {
-	KdShaderManager::GetInstance().m_spriteShader.DrawCircle(0, 0, 100);
-
 	Math::Rectangle rc;
 	rc = { 0,0,64,64 };
 

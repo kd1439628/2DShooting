@@ -1,22 +1,23 @@
 #include "main.h"
 #include "Scene.h"
 
-#include "BaseScene/GameScene/GameScene.h"
-#include "BaseScene/TitleScene/TitleScene.h"
+#include "BaseScene/SceneManager.h"
 
 void Scene::Draw2D()
 {
-	m_nowScene->Draw();
+	SceneManager::Instance().Draw();
 }
 
 void Scene::Update()
 {
-	m_nowScene->Update();
+	SceneManager::Instance().PreUpdate();
+
+	SceneManager::Instance().Update();
 }
 
 void Scene::Init()
 {
-	m_nowScene = std::make_shared<GameScene>();
+
 }
 
 void Scene::Release()
@@ -38,3 +39,5 @@ void Scene::ImGuiUpdate()
 	}
 	ImGui::End();
 }
+
+

@@ -9,18 +9,17 @@ class GameScene :public BaseScene
 public:
 
 	GameScene() { Init(); }
-	~GameScene() {}
+	~GameScene() { Release(); }
 
-	void Init()override;
 	void Update()override;
 	void Draw()override;
-	void Release()override;
 
 	std::shared_ptr<Player> m_player;
 
 private:
 
-
+	void Init()override;
+	void Release()override;
 
 };
 

@@ -177,6 +177,9 @@
     <ClInclude Include="Src\Application\BaseChara\Player\Player.h">
       <Filter>Src\Application\BaseChara\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\BaseScene\SceneManager.h">
+      <Filter>Src\Application\BaseScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -256,6 +259,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\BaseChara\Player\Player.cpp">
       <Filter>Src\Application\BaseChara\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\BaseScene\SceneManager.cpp">
+      <Filter>Src\Application\BaseScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

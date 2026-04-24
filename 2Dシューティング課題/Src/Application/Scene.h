@@ -28,6 +28,7 @@ public:
 		static Scene instance;
 		return instance;
 	}
+
 };
 
 #define SCENE Scene::GetInstance()
