@@ -4,13 +4,12 @@
 
 void ClearScene::Update()
 {
-	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+	bool currentReturnState = (GetAsyncKeyState(VK_RETURN) & 0x8000);
+	if (currentReturnState && !m_prevReturnKey)
 	{
-		if (!GetAsyncKeyState(VK_RETURN & 0x8000))
-		{
-			SceneManager::Instance().SetNextScene(std::make_shared<TitleScene>());
-		}
+		SceneManager::Instance().SetNextScene(std::make_shared<TitleScene>());
 	}
+	m_prevReturnKey = currentReturnState;
 }
 
 void ClearScene::Draw()

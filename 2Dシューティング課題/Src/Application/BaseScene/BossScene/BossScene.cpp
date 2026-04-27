@@ -7,15 +7,22 @@
 
 void BossScene::Update()
 {
-	if (GetAsyncKeyState('Z') & 0x8000)
+
+	bool currentZKeyState = (GetAsyncKeyState('Z') & 0x8000);
+	if (currentZKeyState && !m_prevZKey)
 	{
 		SceneManager::Instance().SetNextScene(std::make_shared<ClearScene>());
 	}
+	m_prevZKey = currentZKeyState;
 
-	if (GetAsyncKeyState('X') & 0x8000)
+
+	bool currentXKeyState = (GetAsyncKeyState('X') & 0x8000);
+	if (currentXKeyState && !m_prevXKey)
 	{
 		SceneManager::Instance().SetNextScene(std::make_shared<GameoverScene>());
 	}
+	m_prevXKey = currentXKeyState;
+
 
 	m_player->Update();
 

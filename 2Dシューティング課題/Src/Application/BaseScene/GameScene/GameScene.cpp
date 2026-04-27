@@ -12,15 +12,22 @@ void GameScene::Draw()
 
 void GameScene::Update()
 {
-	if (GetAsyncKeyState('Z') & 0x8000)
+	bool currentZKeyState = (GetAsyncKeyState('Z') & 0x8000);
+	// 「前回は押されていなくて、今回は押されている」時だけ実行
+	if (currentZKeyState && !m_prevZKey)
 	{
 		SceneManager::Instance().SetNextScene(std::make_shared<BossScene>());
 	}
+	// 次のフレームのために現在の状態を保存
+	m_prevZKey = currentZKeyState;
 
-	if (GetAsyncKeyState('X') & 0x8000)
+
+	bool currentXKeyState = (GetAsyncKeyState('X') & 0x8000);
+	if (currentXKeyState && !m_prevXKey)
 	{
 		SceneManager::Instance().SetNextScene(std::make_shared<GameoverScene>());
 	}
+	m_prevXKey = currentXKeyState;
 
 	m_player->Update();
 }
