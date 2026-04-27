@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../BaseChara.h"
+#include "../BaseObject.h"
 
-class Player :public BaseChara
+class Player :public BaseObject
 {
 public:
 

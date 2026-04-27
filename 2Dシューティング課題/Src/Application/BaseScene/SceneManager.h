@@ -5,36 +5,24 @@ class BaseScene;
 class SceneManager
 {
 public:
-	enum SceneType
-	{
-		Title,
-		Game,
-	};
 
 	void PreUpdate();
 	void Update();
 	void Draw();
 
-	void SetNextScene(SceneType _nextScene)
+	void SetNextScene(std::shared_ptr<BaseScene> _nextScene)
 	{
-		m_nextSceneType = _nextScene;
-	}
-
-	SceneType GetCurrentScene()const
-	{
-		return m_currentSceneType;
+		m_nextScene = _nextScene;
 	}
 
 private:
 
 	void Init();
 	void Release();
-	void ChangeScene(SceneType _SceneYype);
+	void ChangeScene(std::shared_ptr<BaseScene> _nextScene);
 
-	std::shared_ptr<BaseScene> m_CurrentScene;
-
-	SceneType m_currentSceneType = SceneType::Title;
-	SceneType m_nextSceneType = m_currentSceneType;
+	std::shared_ptr<BaseScene> m_currentScene;
+	std::shared_ptr<BaseScene> m_nextScene;
 
 private:
 

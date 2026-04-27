@@ -2,6 +2,7 @@
 #include "Scene.h"
 
 #include "BaseScene/SceneManager.h"
+#include "BaseScene/TitleScene/TitleScene.h"
 
 void Scene::Draw2D()
 {
@@ -17,7 +18,7 @@ void Scene::Update()
 
 void Scene::Init()
 {
-
+	SceneManager::Instance().SetNextScene(std::make_shared<TitleScene>());
 }
 
 void Scene::Release()

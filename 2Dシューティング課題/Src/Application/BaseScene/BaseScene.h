@@ -4,7 +4,7 @@ class BaseScene
 {
 public:
 
-	BaseScene() {}
+	BaseScene() { m_prevReturnKey = (GetAsyncKeyState(VK_RETURN) & 0x8000); }
 	virtual ~BaseScene() {}
 
 	virtual void Update();
@@ -12,9 +12,9 @@ public:
 	virtual void Init();
 	virtual void Release();
 
-private:
+protected:
 
-
+	bool m_prevReturnKey = false;
 
 };
 

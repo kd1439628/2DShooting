@@ -1,11 +1,11 @@
 #pragma once
 
-class BaseChara
+class BaseObject
 {
 public:
 
-	BaseChara() { Init(); }
-	~BaseChara() { Release(); }
+	BaseObject() { Init(); }
+	~BaseObject() { Release(); }
 
 	void Update();
 	void Draw();

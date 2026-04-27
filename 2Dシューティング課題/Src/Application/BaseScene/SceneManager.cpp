@@ -1,29 +1,36 @@
 #include "SceneManager.h"
 
-#include "GameScene/GameScene.h"
-#include "TitleScene/TitleScene.h"
+#include "BaseScene.h"
 
 void SceneManager::PreUpdate()
 {
-	if (m_currentSceneType != m_nextSceneType)
+	if (m_nextScene)
 	{
-		ChangeScene(m_nextSceneType);
+		ChangeScene(m_nextScene);
+		m_nextScene = nullptr;
 	}
 }
 
 void SceneManager::Update()
 {
-	m_CurrentScene->Update();
+	if (m_currentScene)
+	{
+		m_currentScene->Update();
+	}
 }
 
 void SceneManager::Draw()
 {
-	m_CurrentScene->Draw();
+	if (m_currentScene)
+	{
+		m_currentScene->Draw();
+	}
 }
 
 void SceneManager::Init()
 {
-	ChangeScene(m_currentSceneType);
+	m_currentScene = nullptr;
+	m_nextScene = nullptr;
 }
 
 void SceneManager::Release()
@@ -31,25 +38,21 @@ void SceneManager::Release()
 
 }
 
-void SceneManager::ChangeScene(SceneType _SceneType)
+void SceneManager::ChangeScene(std::shared_ptr<BaseScene> _nextScene)
 {
-	switch (_SceneType)
+	// 現在のシーンがあれば解放処理
+	if (m_currentScene)
 	{
-
-	case SceneType::Title:
-	{
-		m_CurrentScene = std::make_shared<TitleScene>();
-		break;
-	}
-	case SceneType::Game:
-	{
-		m_CurrentScene = std::make_shared<GameScene>();
-		break;
+		m_currentScene->Release();
 	}
 
-	}
+	// ステートの差し替え
+	m_currentScene = _nextScene;
 
-	//②シーン管理を更新
-	m_currentSceneType = _SceneType;
+	// 新しいシーンの初期化
+	if (m_currentScene)
+	{
+		m_currentScene->Init();
+	}
 }
 

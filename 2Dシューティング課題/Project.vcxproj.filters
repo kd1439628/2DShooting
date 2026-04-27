@@ -43,15 +43,6 @@
     <Filter Include="Src\System\Audio">
       <UniqueIdentifier>{667d1cb1-5ae5-476f-acd5-14b7d294a95a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Application\BaseChara">
-      <UniqueIdentifier>{2c8109c6-d6dc-4139-afd8-093539c1d281}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\BaseChara\Player">
-      <UniqueIdentifier>{95c8f10e-876c-4e51-90b2-0ffc6a9c45bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Application\BaseChara\Enemies">
-      <UniqueIdentifier>{884c2b63-831f-44df-9572-f06d292f23ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Application\BaseScene">
       <UniqueIdentifier>{063c8b4a-95d7-4287-85b9-20d883658126}</UniqueIdentifier>
     </Filter>
@@ -66,6 +57,21 @@
     </Filter>
     <Filter Include="Src\Application\BaseScene\GameoverScene">
       <UniqueIdentifier>{25097f2e-e733-4bbf-a81e-372226315bed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Stsge">
+      <UniqueIdentifier>{23b2f76d-f0b6-49a5-9bba-eb017062ac59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\BaseScene\BossScene">
+      <UniqueIdentifier>{d4d84ddb-d22f-4e78-b88a-c1fb3d639f9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\BaseObject">
+      <UniqueIdentifier>{2c8109c6-d6dc-4139-afd8-093539c1d281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\BaseObject\Player">
+      <UniqueIdentifier>{95c8f10e-876c-4e51-90b2-0ffc6a9c45bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\BaseObject\Enemies">
+      <UniqueIdentifier>{884c2b63-831f-44df-9572-f06d292f23ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -171,14 +177,23 @@
     <ClInclude Include="Src\Application\BaseScene\BaseScene.h">
       <Filter>Src\Application\BaseScene</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\BaseChara\BaseChara.h">
-      <Filter>Src\Application\BaseChara</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Application\BaseChara\Player\Player.h">
-      <Filter>Src\Application\BaseChara\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\BaseScene\SceneManager.h">
       <Filter>Src\Application\BaseScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\BaseScene\ClearScene\ClearScene.h">
+      <Filter>Src\Application\BaseScene\ClearScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\BaseScene\BossScene\BossScene.h">
+      <Filter>Src\Application\BaseScene\BossScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\BaseScene\GameoverScene\GameoverScene.h">
+      <Filter>Src\Application\BaseScene\GameoverScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\BaseObject\BaseObject.h">
+      <Filter>Src\Application\BaseObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\BaseObject\Player\Player.h">
+      <Filter>Src\Application\BaseObject\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -254,14 +269,23 @@
     <ClCompile Include="Src\Application\BaseScene\BaseScene.cpp">
       <Filter>Src\Application\BaseScene</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\BaseChara\BaseChara.cpp">
-      <Filter>Src\Application\BaseChara</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Application\BaseChara\Player\Player.cpp">
-      <Filter>Src\Application\BaseChara\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Application\BaseScene\SceneManager.cpp">
       <Filter>Src\Application\BaseScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\BaseScene\ClearScene\ClearScene.cpp">
+      <Filter>Src\Application\BaseScene\ClearScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\BaseScene\BossScene\BossScene.cpp">
+      <Filter>Src\Application\BaseScene\BossScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\BaseScene\GameoverScene\GameoverScene.cpp">
+      <Filter>Src\Application\BaseScene\GameoverScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\BaseObject\BaseObject.cpp">
+      <Filter>Src\Application\BaseObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\BaseObject\Player\Player.cpp">
+      <Filter>Src\Application\BaseObject\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
