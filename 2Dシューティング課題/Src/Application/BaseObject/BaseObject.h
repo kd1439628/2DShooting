@@ -5,15 +5,15 @@ class BaseObject
 public:
 
 	BaseObject() { Init(); }
-	~BaseObject() { Release(); }
+	virtual ~BaseObject() { Release(); }
 
-	void Update();
-	void Draw();
+	virtual void Update();
+	virtual void Draw();
 
 protected:
 
-	void Release();
-	void Init();
+	virtual void Init();
+	virtual void Release();
 
 	KdTexture m_tex;
 	Math::Vector3 m_pos = {};

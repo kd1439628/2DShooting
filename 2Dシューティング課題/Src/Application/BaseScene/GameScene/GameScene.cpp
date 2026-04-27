@@ -4,10 +4,14 @@
 #include "../BossScene/BossScene.h"
 
 #include "../../BaseObject/Player/Player.h"
+#include "../../BaseObject/Enemies/Enemy.h"
 
 void GameScene::Draw()
 {
-	m_player->Draw();
+	for (int i = 0; i < m_objList.size(); ++i)
+	{
+		m_objList[i]->Draw();
+	}
 }
 
 void GameScene::Update()
@@ -29,12 +33,30 @@ void GameScene::Update()
 	}
 	m_prevXKey = currentXKeyState;
 
-	m_player->Update();
+
+
+	//全オブジェクトの更新関数を呼ぶ
+	for (int i = 0; i < m_objList.size(); ++i)
+	{
+		m_objList[i]->Update();
+	}
 }
 
 void GameScene::Init()
 {
-	m_player = std::make_shared<Player>();
+	std::shared_ptr<Player> player;
+	player = std::make_shared<Player>();	//①インスタンスを生成
+	//player->Init();							//②初期化
+	m_objList.push_back(player);			//③リストへ追加
+
+	// エネミー
+	std::shared_ptr<Enemy> enemy;
+	for (int i = 0; i < 10; ++i)
+	{
+		enemy = std::make_shared<Enemy>();	// ①インスタンスを生成
+		//enemy->Init();						// ②初期化
+		m_objList.push_back(enemy);			// ③リストへ追加
+	}
 }
 
 void GameScene::Release()
