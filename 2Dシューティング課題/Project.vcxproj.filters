@@ -73,6 +73,9 @@
     <Filter Include="Src\Application\BaseObject\Enemies">
       <UniqueIdentifier>{884c2b63-831f-44df-9572-f06d292f23ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\BaseObject\Bullet">
+      <UniqueIdentifier>{e7fc633b-a356-4e14-962b-9995880b1200}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -198,6 +201,9 @@
     <ClInclude Include="Src\Application\BaseObject\Enemies\Enemy.h">
       <Filter>Src\Application\BaseObject\Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\BaseObject\Bullet\Bullet.h">
+      <Filter>Src\Application\BaseObject\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -292,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\BaseObject\Enemies\Enemy.cpp">
       <Filter>Src\Application\BaseObject\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\BaseObject\Bullet\Bullet.cpp">
+      <Filter>Src\Application\BaseObject\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

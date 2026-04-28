@@ -17,5 +17,7 @@ private:
 	void Init();
 	void Release();
 
+	std::vector<std::shared_ptr<BaseObject>> m_bltList;
+
 };
 
