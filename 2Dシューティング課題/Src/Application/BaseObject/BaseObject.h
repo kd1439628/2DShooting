@@ -10,13 +10,15 @@ public:
 	virtual void Update();
 	virtual void Draw();
 
+	bool IsAlive()const { return m_aliveFlg; }
+
 protected:
 
 	virtual void Init();
 	virtual void Release();
 
 	KdTexture m_tex;
-	Math::Vector3 m_pos = {};
+	Math::Vector3 m_pos;
 	bool m_aliveFlg = true;
 
 };

@@ -2,7 +2,7 @@
 #include "../Bullet/Bullet.h"
 
 
-void Player::Update()
+void Player::Update(std::vector<std::shared_ptr<BaseObject>>& objList)
 {
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 	{
@@ -21,67 +21,64 @@ void Player::Update()
 		m_pos.y -= 5;
 	}
 
+	/////////////////////////////////////////////////
+	//アニメーション                               //
+	/////////////////////////////////////////////////
+	m_anime += 0.2f;
+
+	if (m_anime >= 10.0f)
+	{
+		m_anime = 0;
+	}
 
 	/////////////////////////////////////////////////
 	//                    Bullet                   //
 	/////////////////////////////////////////////////
+	if (m_firerateTimer > 0)
+	{
+		m_firerateTimer--;
+	}
+
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 	{
-		std::shared_ptr<Bullet> bullet;
-		bullet = std::make_shared<Bullet>();
-
-		bullet->SetPos(m_pos);
-
-		m_bltList.push_back(bullet);
-	}
-
-	//全オブジェクトの更新関数を呼ぶ
-	for (int i = 0; i < m_bltList.size(); ++i)
-	{
-		m_bltList[i]->Update();
-	}
-
-	auto it = m_bltList.begin();
-	while (it != m_bltList.end())
-	{
-		// Bullet.h または BaseObject.h に bool IsAlive() { return m_aliveFlg; } を追加しておくと便利です
-		// ここではフラグを直接判定（BaseObjectでprotectedなのでアクセス可能にする必要があります）
-		if ((*it)->Update() /* 本来はここで生存フラグを確認 */, false)
+		if (m_firerateTimer <= 0)
 		{
-			// 簡易的な削除判定（本来はフラグを見て erase する）
-		}
+			std::shared_ptr<Bullet> bullet;
+			bullet = std::make_shared<Bullet>();
 
-		// 正しい削除の書き方例：
-		/*
-		if (!(*it)->GetAlive()) {
-			it = m_bltList.erase(it);
-		} else {
-			++it;
+			bullet->SetPos(m_pos);
+
+			objList.push_back(bullet);
+
+			m_firerateTimer = 10;
 		}
-		*/
-		++it; // 今回は一旦そのまま進めます
 	}
+
 }
 
 void Player::Init()
 {
-	m_tex.Load("Textures/player.png");
+	m_tex.Load("Textures/ship01.png");
 	m_pos = {};	// 0,0 で初期化
 	m_aliveFlg = true;
+	m_firerateTimer = 0;
+	m_anime = 0;
 }
 
 void Player::Draw()
 {
+	// 1. 現在のコマ番号（整数）を取得
+	int animeIdx = (int)m_anime;
+
+	// 2. 矩形（rc）の計算
+	// 横に 128px ずつ並んでいるので、[コマ番号 × 128] が左端の座標になります
 	Math::Rectangle rc;
-	rc = { 0,0,64,64 };
+	rc = { animeIdx * 256, 0, 256, 228 };
 
+	// 3. 指定された形式で描画
+	// プレイヤーの位置 (m_playerPos) に合わせてアニメーションを描画
 	KdShaderManager::GetInstance().m_spriteShader.DrawTex(
-		&m_tex, m_pos.x, m_pos.y, 64, 64, &rc);
-
-	for (int i = 0; i < m_bltList.size(); i++)
-	{
-		m_bltList[i]->Draw();
-	}
+		&m_tex, (int)m_pos.x, (int)m_pos.y, 128, 114, &rc);
 }
 
 void Player::Release()

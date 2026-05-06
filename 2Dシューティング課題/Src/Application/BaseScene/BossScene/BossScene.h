@@ -2,7 +2,7 @@
 
 #include "../BaseScene.h"
 
-class Player;
+class BaseObject;
 
 class BossScene :public BaseScene
 {
@@ -14,11 +14,12 @@ public:
 	void Update()override;
 	void Draw()override;
 
-	std::shared_ptr<Player> m_player;
-
 private:
 
 	void Init()override;
 	void Release()override;
+
+	std::vector<std::shared_ptr<BaseObject>> m_objList;
+
 };
 

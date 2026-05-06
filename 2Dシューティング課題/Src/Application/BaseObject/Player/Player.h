@@ -9,7 +9,7 @@ public:
 	Player() { Init(); }
 	~Player() { Release(); }
 
-	void Update();
+	void Update(std::vector<std::shared_ptr<BaseObject>>& objList);
 	void Draw();
 
 private:
@@ -17,7 +17,8 @@ private:
 	void Init();
 	void Release();
 
-	std::vector<std::shared_ptr<BaseObject>> m_bltList;
+	int m_firerateTimer = 0;
 
+	float m_anime = 0;
 };
 

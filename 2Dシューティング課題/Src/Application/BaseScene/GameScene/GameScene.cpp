@@ -5,17 +5,27 @@
 
 #include "../../BaseObject/Player/Player.h"
 #include "../../BaseObject/Enemies/Enemy.h"
+#include "../../Stage/Stage.h"
 
 void GameScene::Draw()
 {
-	for (int i = 0; i < m_objList.size(); ++i)
+	// 1. 背景を一番最初に描画
+	if (m_stage) {
+		m_stage->Draw();
+	}
+
+	// 全オブジェクト（プレイヤーも弾も）を順番に描画するだけ！
+	for (auto& obj : m_objList)
 	{
-		m_objList[i]->Draw();
+		obj->Draw();
 	}
 }
 
 void GameScene::Update()
 {
+	// ステージの更新
+	if (m_stage) { m_stage->Update(); }
+
 	bool currentZKeyState = (GetAsyncKeyState('Z') & 0x8000);
 	// 「前回は押されていなくて、今回は押されている」時だけ実行
 	if (currentZKeyState && !m_prevZKey)
@@ -35,15 +45,38 @@ void GameScene::Update()
 
 
 
-	//全オブジェクトの更新関数を呼ぶ
+	// 1. 全オブジェクトの更新
 	for (int i = 0; i < m_objList.size(); ++i)
 	{
-		m_objList[i]->Update();
+		// プレイヤーだけは弾を追加するためにリストを渡す
+		auto player = std::dynamic_pointer_cast<Player>(m_objList[i]);
+		if (player) {
+			player->Update(m_objList);
+		}
+		else {
+			m_objList[i]->Update();
+		}
+	}
+
+	// 2. 死んだオブジェクト（画面外に出た弾など）を一括削除 ★
+	auto it = m_objList.begin();
+	while (it != m_objList.end())
+	{
+		if ((*it)->IsAlive() == false) {
+			it = m_objList.erase(it); // ここでメモリも自動解放される
+		}
+		else {
+			++it;
+		}
 	}
 }
 
 void GameScene::Init()
 {
+	// ステージの生成
+	m_stage = std::make_shared<Stage>();
+
+	//プレイヤー
 	std::shared_ptr<Player> player;
 	player = std::make_shared<Player>();	//①インスタンスを生成
 	//player->Init();							//②初期化
@@ -61,5 +94,5 @@ void GameScene::Init()
 
 void GameScene::Release()
 {
-
+	m_objList.clear();
 }
