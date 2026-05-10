@@ -27,14 +27,7 @@ void BossScene::Update()
 	// 1. 全オブジェクトの更新
 	for (int i = 0; i < m_objList.size(); ++i)
 	{
-		// プレイヤーだけは弾を追加するためにリストを渡す
-		auto player = std::dynamic_pointer_cast<Player>(m_objList[i]);
-		if (player) {
-			player->Update(m_objList);
-		}
-		else {
-			m_objList[i]->Update();
-		}
+		m_objList[i]->Update(m_objList);
 	}
 
 	// 2. 死んだオブジェクト（画面外に出た弾など）を一括削除 ★

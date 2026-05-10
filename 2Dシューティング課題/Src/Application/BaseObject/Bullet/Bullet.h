@@ -7,16 +7,18 @@ class Bullet :public BaseObject
 public:
 
 	Bullet() { Init(); }
-	~Bullet() { Release(); }
+	~Bullet() override { Release(); }
 
-	void Update();
-	void Draw();
+	void Update(std::vector<std::shared_ptr<BaseObject>>& objList)override;
+	void Draw()override;
 
 	void SetPos(const Math::Vector3& pos) { m_pos = pos; }
+	void SetMove(const Math::Vector3& move) { m_move = move; }
 
-private:
+protected:
 
-	void Init();
-	void Release();
+	void Init()override;
+	void Release()override;
 
+	Math::Vector3 m_move = { 0, 0, 0 };
 };

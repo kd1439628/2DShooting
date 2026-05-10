@@ -9,16 +9,14 @@
 
 void GameScene::Draw()
 {
-	// 1. 背景を一番最初に描画
-	if (m_stage) {
-		m_stage->Draw();
-	}
+	if (m_stage) { m_stage->Draw(); }
 
-	// 全オブジェクト（プレイヤーも弾も）を順番に描画するだけ！
 	for (auto& obj : m_objList)
 	{
 		obj->Draw();
 	}
+
+	
 }
 
 void GameScene::Update()
@@ -46,26 +44,105 @@ void GameScene::Update()
 
 
 	// 1. 全オブジェクトの更新
-	for (int i = 0; i < m_objList.size(); ++i)
+	std::vector<std::shared_ptr<BaseObject>> updateList = m_objList;
+	for (auto& obj : updateList)
 	{
-		// プレイヤーだけは弾を追加するためにリストを渡す
-		auto player = std::dynamic_pointer_cast<Player>(m_objList[i]);
-		if (player) {
-			player->Update(m_objList);
-		}
-		else {
-			m_objList[i]->Update();
+		// obj自体が有効か、かつ生存フラグが立っているか確認
+		if (obj && obj->IsAlive())
+		{
+			obj->Update(m_objList);
 		}
 	}
 
-	// 2. 死んだオブジェクト（画面外に出た弾など）を一括削除 ★
+	// --- 2. 当たり判定 ---
+	if (m_hitChecker) {
+		m_hitChecker->AllCollision(m_objList);
+	}
+
+	// --- 3. UIへのHP反映と回復実行 ---
+	// リストからPlayerを見つけて、HP情報をUIに送る
+	for (auto& obj : m_objList) {
+		auto player = std::dynamic_pointer_cast<Player>(obj);
+		if (player) {
+			// もしHit側で1000点超えていたら回復させる
+			// (今回はHit::CheckCollision内でplayerを見つけるのが大変なので
+			// ここでスコア状況を見て回復させるのがスマートです)
+		}
+	}
+
+	// --- 敵の出現管理 ---
+	if (m_spawnTimer > 0)
+	{
+		m_spawnTimer--;
+	}
+	else
+	{
+		// 1. 画面内の現在の敵の数を数える
+		int currentEnemies = 0;
+		for (auto& obj : m_objList) {
+			if (std::dynamic_pointer_cast<Enemy>(obj)) currentEnemies++;
+		}
+
+		// 2. 上限に達していなければ生成を試みる
+		if (currentEnemies < m_maxEnemyCount)
+		{
+			auto newEnemy = std::make_shared<Enemy>();
+
+			// 重なりチェック（最大5回リトライ）
+			bool isOverlapping = false;
+			for (int retry = 0; retry < 5; ++retry)
+			{
+				isOverlapping = false;
+				// Enemy::Initでランダム座標が決まるので、それをチェック
+				for (auto& obj : m_objList)
+				{
+					auto otherEnemy = std::dynamic_pointer_cast<Enemy>(obj);
+					if (otherEnemy)
+					{
+						// 新しい敵と既存の敵の距離を計算（Vector3の距離）
+						float dist = (newEnemy->GetPos() - otherEnemy->GetPos()).Length();
+						if (dist < 150.0f) // 150px以内なら「重なっている」とみなす
+						{
+							isOverlapping = true;
+							break;
+						}
+					}
+				}
+
+				if (!isOverlapping) break; // 重なっていなければループを抜ける
+
+				// 重なっていたらInitを呼び直して座標を再抽選
+				newEnemy->Relocate();
+			}
+
+			// 最終的に重なっていなければリストに追加
+			if (!isOverlapping)
+			{
+				m_objList.push_back(newEnemy);
+				// 次の出現までの待ち時間を設定（60フレーム = 1秒など）
+				m_spawnTimer = 70 + rand() % 50;
+			}
+		}
+	}
+
+	//当たり判定の実行
+	if (m_hitChecker)
+	{
+		m_hitChecker->AllCollision(m_objList);
+	}
+
+	// --- 2. 不要なオブジェクトの削除 (erase-removeイディオム) ---
+	// 生存フラグが false のものを一括で削除します。
 	auto it = m_objList.begin();
 	while (it != m_objList.end())
 	{
-		if ((*it)->IsAlive() == false) {
-			it = m_objList.erase(it); // ここでメモリも自動解放される
+		// nullチェックを追加し、!IsAlive() のものを削除
+		if (!(*it) || !(*it)->IsAlive())
+		{
+			it = m_objList.erase(it);
 		}
-		else {
+		else
+		{
 			++it;
 		}
 	}
@@ -73,23 +150,19 @@ void GameScene::Update()
 
 void GameScene::Init()
 {
-	// ステージの生成
 	m_stage = std::make_shared<Stage>();
 
-	//プレイヤー
-	std::shared_ptr<Player> player;
-	player = std::make_shared<Player>();	//①インスタンスを生成
-	//player->Init();							//②初期化
-	m_objList.push_back(player);			//③リストへ追加
 
-	// エネミー
-	std::shared_ptr<Enemy> enemy;
-	for (int i = 0; i < 10; ++i)
-	{
-		enemy = std::make_shared<Enemy>();	// ①インスタンスを生成
-		//enemy->Init();						// ②初期化
-		m_objList.push_back(enemy);			// ③リストへ追加
-	}
+	// 当たり判定にUIを教える
+	m_hitChecker = std::make_unique<Hit>();
+
+	// プレイヤー生成
+	auto player = std::make_shared<Player>();
+	m_objList.push_back(player);
+
+	// 初期設定
+	m_spawnTimer = 60;
+	m_maxEnemyCount = 8;
 }
 
 void GameScene::Release()

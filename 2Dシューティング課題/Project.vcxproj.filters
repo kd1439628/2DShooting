@@ -76,6 +76,15 @@
     <Filter Include="Src\Application\BaseObject\Bullet">
       <UniqueIdentifier>{e7fc633b-a356-4e14-962b-9995880b1200}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\BaseObject\Bullet\PlayerBuller">
+      <UniqueIdentifier>{9e9375f2-e399-44c0-8019-501d50698caf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\BaseObject\Bullet\EnemyBullet">
+      <UniqueIdentifier>{7f2885cf-484a-4443-bb8c-dbe9a0915798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\UI">
+      <UniqueIdentifier>{394c9256-d339-46f4-952d-8bc1a23e1a5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -207,6 +216,18 @@
     <ClInclude Include="Src\Application\Stage\Stage.h">
       <Filter>Src\Application\Stsge</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\BaseObject\Bullet\PlayerBullet\PlayerBullet.h">
+      <Filter>Src\Application\BaseObject\Bullet\PlayerBuller</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\BaseObject\Bullet\EnemyBullet\EnemyBullet.h">
+      <Filter>Src\Application\BaseObject\Bullet\EnemyBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\BaseObject\Hit.h">
+      <Filter>Src\Application\BaseObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\BaseObject\UI\UI.h">
+      <Filter>Src\Application\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -307,6 +328,18 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Stage\Stage.cpp">
       <Filter>Src\Application\Stsge</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\BaseObject\Bullet\PlayerBullet\PlayerBullet.cpp">
+      <Filter>Src\Application\BaseObject\Bullet\PlayerBuller</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\BaseObject\Bullet\EnemyBullet\EnemyBullet.cpp">
+      <Filter>Src\Application\BaseObject\Bullet\EnemyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\BaseObject\Hit.cpp">
+      <Filter>Src\Application\BaseObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\BaseObject\UI\UI.cpp">
+      <Filter>Src\Application\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
