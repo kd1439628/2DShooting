@@ -75,7 +75,8 @@ void Player::Init()
 	m_aliveFlg = true;
 	m_firerateTimer = 0;
 	m_anime = 0;
-	m_hp = 5;
+	m_hp = 4;
+	m_maxHp = 4;
 	m_radius = 30.0f;
 }
 
@@ -91,8 +92,22 @@ void Player::Draw()
 
 	// 3. 指定された形式で描画
 	// プレイヤーの位置 (m_playerPos) に合わせてアニメーションを描画
-	KdShaderManager::GetInstance().m_spriteShader.DrawTex(
-		&m_tex, (int)m_pos.x, (int)m_pos.y, 180, 160, &rc);
+	KdShaderManager::GetInstance().m_spriteShader.DrawTex
+	(
+		&m_tex, (int)m_pos.x, (int)m_pos.y, 180, 160, &rc
+	);
+}
+
+void Player::OnDamage(int damage)
+{
+	if (!m_aliveFlg) return;
+
+	m_hp -= damage;
+	if (m_hp <= 0)
+	{
+		m_hp = 0;
+		m_aliveFlg = false;
+	}
 }
 
 void Player::Release()

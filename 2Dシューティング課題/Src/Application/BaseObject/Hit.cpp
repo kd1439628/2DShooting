@@ -4,8 +4,7 @@
 #include "Enemies/Enemy.h"
 #include "Bullet/EnemyBullet/EnemyBullet.h"
 #include "Bullet/PlayerBullet/PlayerBullet.h"
-#include "UI/UI.h"
-
+#include "../UI/UI.h"
 
 void Hit::AllCollision(std::vector<std::shared_ptr<BaseObject>>& objList)
 {
@@ -62,6 +61,21 @@ void Hit::CheckCollision(std::shared_ptr<BaseObject> objA, std::shared_ptr<BaseO
 
 			m_totalScore += scorePoint;
 
+			if (m_totalScore - m_lastHealScore >= 1000)
+			{
+				// プレイヤーを探して回復させる
+				for (auto& obj : objList)
+				{
+					auto player = std::dynamic_pointer_cast<Player>(obj);
+					if (player)
+					{
+						player->Heal(1);
+						// 回復基準スコアを更新（1000, 2000...と更新していく）
+						m_lastHealScore += 1000;
+						break;
+					}
+				}
+			}
 
 		}
 		return;

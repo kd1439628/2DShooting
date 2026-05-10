@@ -16,13 +16,32 @@ void GameScene::Draw()
 		obj->Draw();
 	}
 
-	
+	if (m_ui) { m_ui->Draw(); }
 }
 
 void GameScene::Update()
 {
 	// ステージの更新
 	if (m_stage) { m_stage->Update(); }
+
+	//  全オブジェクトの更新
+	std::vector<std::shared_ptr<BaseObject>> updateList = m_objList;
+	for (auto& obj : updateList)
+	{
+		// obj自体が有効か、かつ生存フラグが立っているか確認
+		if (obj && obj->IsAlive())
+		{
+			obj->Update(m_objList);
+		}
+	}
+
+	// ---  当たり判定 ---
+	if (m_hitChecker)
+	{
+		m_hitChecker->AllCollision(m_objList);
+	}
+
+	if (m_ui) { m_ui->Update(); }
 
 	bool currentZKeyState = (GetAsyncKeyState('Z') & 0x8000);
 	// 「前回は押されていなくて、今回は押されている」時だけ実行
@@ -42,24 +61,7 @@ void GameScene::Update()
 	m_prevXKey = currentXKeyState;
 
 
-
-	// 1. 全オブジェクトの更新
-	std::vector<std::shared_ptr<BaseObject>> updateList = m_objList;
-	for (auto& obj : updateList)
-	{
-		// obj自体が有効か、かつ生存フラグが立っているか確認
-		if (obj && obj->IsAlive())
-		{
-			obj->Update(m_objList);
-		}
-	}
-
-	// --- 2. 当たり判定 ---
-	if (m_hitChecker) {
-		m_hitChecker->AllCollision(m_objList);
-	}
-
-	// --- 3. UIへのHP反映と回復実行 ---
+	// ---  UIへのHP反映と回復実行 ---
 	// リストからPlayerを見つけて、HP情報をUIに送る
 	for (auto& obj : m_objList) {
 		auto player = std::dynamic_pointer_cast<Player>(obj);
@@ -136,10 +138,9 @@ void GameScene::Update()
 	auto it = m_objList.begin();
 	while (it != m_objList.end())
 	{
-		// nullチェックを追加し、!IsAlive() のものを削除
-		if (!(*it) || !(*it)->IsAlive())
+		if (!(*it)->IsAlive())
 		{
-			it = m_objList.erase(it);
+			it = m_objList.erase(it); // ここでPlayerがリストから消える
 		}
 		else
 		{
@@ -150,19 +151,23 @@ void GameScene::Update()
 
 void GameScene::Init()
 {
+	// 1. ステージ（一番奥）
 	m_stage = std::make_shared<Stage>();
 
-
-	// 当たり判定にUIを教える
+	// 2. 当たり判定
 	m_hitChecker = std::make_unique<Hit>();
 
-	// プレイヤー生成
+	// 3. プレイヤー
 	auto player = std::make_shared<Player>();
 	m_objList.push_back(player);
 
-	// 初期設定
+	// 2. UI生成と連携
+	m_ui = std::make_shared<UI>();
+	m_ui->SetPlayer(player); // UIにプレイヤーを教える
+
+
 	m_spawnTimer = 60;
-	m_maxEnemyCount = 8;
+	m_maxEnemyCount = 10;
 }
 
 void GameScene::Release()

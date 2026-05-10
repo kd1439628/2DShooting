@@ -83,7 +83,7 @@
       <UniqueIdentifier>{7f2885cf-484a-4443-bb8c-dbe9a0915798}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Application\UI">
-      <UniqueIdentifier>{394c9256-d339-46f4-952d-8bc1a23e1a5f}</UniqueIdentifier>
+      <UniqueIdentifier>{bc3d5f05-4688-46c6-aa24-c57e74a7586a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -225,7 +225,7 @@
     <ClInclude Include="Src\Application\BaseObject\Hit.h">
       <Filter>Src\Application\BaseObject</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\BaseObject\UI\UI.h">
+    <ClInclude Include="Src\Application\UI\UI.h">
       <Filter>Src\Application\UI</Filter>
     </ClInclude>
   </ItemGroup>
@@ -338,7 +338,7 @@
     <ClCompile Include="Src\Application\BaseObject\Hit.cpp">
       <Filter>Src\Application\BaseObject</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\BaseObject\UI\UI.cpp">
+    <ClCompile Include="Src\Application\UI\UI.cpp">
       <Filter>Src\Application\UI</Filter>
     </ClCompile>
   </ItemGroup>
