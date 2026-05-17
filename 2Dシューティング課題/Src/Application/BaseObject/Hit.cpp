@@ -5,6 +5,7 @@
 #include "Bullet/EnemyBullet/EnemyBullet.h"
 #include "Bullet/PlayerBullet/PlayerBullet.h"
 #include "../UI/UI.h"
+#include "Explosion/Explosion.h"
 
 void Hit::AllCollision(std::vector<std::shared_ptr<BaseObject>>& objList)
 {
@@ -52,6 +53,8 @@ void Hit::CheckCollision(std::shared_ptr<BaseObject> objA, std::shared_ptr<BaseO
 		// 敵を倒した時のスコア・回復処理
 		if (!enemy->IsAlive())
 		{
+			objList.push_back(std::make_shared<Explosion>(enemy->GetPos()));
+
 			int scorePoint = 0;
 			// 敵の種類を判別（EnemyにGetTypeが必要）
 			auto type = enemy->GetType();
@@ -59,21 +62,24 @@ void Hit::CheckCollision(std::shared_ptr<BaseObject> objA, std::shared_ptr<BaseO
 			else if (type == Enemy::Type::Hard)     scorePoint = 200;
 			else if (type == Enemy::Type::Assault)  scorePoint = 500;
 
-			m_totalScore += scorePoint;
-
-			if (m_totalScore - m_lastHealScore >= 1000)
+			for (auto& obj : objList)
 			{
-				// プレイヤーを探して回復させる
-				for (auto& obj : objList)
+				auto player = std::dynamic_pointer_cast<Player>(obj);
+				if (player)
 				{
-					auto player = std::dynamic_pointer_cast<Player>(obj);
-					if (player)
+					// PlayerクラスにUIへの参照を持たせているのでそれを利用
+					player->AddScore(scorePoint);
+
+					// Hitクラス側の管理用スコアも更新（回復判定用）
+					m_totalScore += scorePoint;
+
+					// 1000点ごとの回復処理（既存のロジック）
+					if (m_totalScore - m_lastHealScore >= 1000)
 					{
 						player->Heal(1);
-						// 回復基準スコアを更新（1000, 2000...と更新していく）
 						m_lastHealScore += 1000;
-						break;
 					}
+					break;
 				}
 			}
 
@@ -91,6 +97,11 @@ void Hit::CheckCollision(std::shared_ptr<BaseObject> objA, std::shared_ptr<BaseO
 	if (eBullet && player) {
 		player->OnDamage(1); // プレイヤー死亡など
 		eBullet->OnCollision(); // 弾消滅
+
+		if (!player->IsAlive()) {
+			objList.push_back(std::make_shared<Explosion>(player->GetPos()));
+		}
+
 		return;
 	}
 
@@ -104,6 +115,10 @@ void Hit::CheckCollision(std::shared_ptr<BaseObject> objA, std::shared_ptr<BaseO
 	if (enemyBody && playerBody) {
 		playerBody->OnDamage(99);
 		enemyBody->OnDamage(99); // 体当たりは自分も大ダメージ
+
+		objList.push_back(std::make_shared<Explosion>(playerBody->GetPos()));
+		objList.push_back(std::make_shared<Explosion>(enemyBody->GetPos()));
+
 		return;
 	}
 }

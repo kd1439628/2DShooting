@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../BaseObject.h"
+#include <SimpleMath.h>
 
 class Enemy :public BaseObject
 {
@@ -17,7 +18,6 @@ public:
 
 	void Update(std::vector<std::shared_ptr<BaseObject>>& objList)override;
 	void Draw()override;
-	void Relocate();
 
 	// ダメージ処理
 	void OnDamage(int damage) {
@@ -26,6 +26,8 @@ public:
 	}
 
 	Type GetType() const { return m_type; }
+
+	void InitializeAs(Type type, Math::Vector3 pos);
 
 protected:
 
@@ -37,9 +39,9 @@ private:
 	Type	m_type = Type::Normal;
 	int		m_hp = 1;
 	float	m_speed = 0;
-
 	float	m_anime = 0;	// 画像の横のコマ数（10個）
-
+	float m_hitAnime;
 	int m_firerateTimer = 0;
 
+	KdTexture m_HitTex;
 };

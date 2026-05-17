@@ -33,11 +33,11 @@ bool Application::Init(int w, int h)
 	//===================================================================
 	// ウィンドウ作成
 	//===================================================================
-	if (m_window.Create(w, h, "2DShooting", "Window") == false) {
+	if (m_window.Create(w, h, "SPACE RAID", "Window") == false) {
 		MessageBoxA(nullptr, "ウィンドウ作成に失敗", "エラー", MB_OK);
 		return false;
 	}
-
+	ShowCursor(FALSE);
 	//===================================================================
 	// フルスクリーン確認
 	//===================================================================
@@ -53,9 +53,9 @@ bool Application::Init(int w, int h)
 
 	// デバイスのデバッグモードを有効にする
 	bool deviceDebugMode = false;
-	#ifdef _DEBUG
+#ifdef _DEBUG
 	deviceDebugMode = true;
-	#endif
+#endif
 
 	// Direct3D初期化
 	std::string errorMsg;
@@ -96,7 +96,7 @@ bool Application::Init(int w, int h)
 
 	{
 		// 日本語対応
-		#include "imgui/ja_glyph_ranges.h"
+#include "imgui/ja_glyph_ranges.h"
 		ImFontConfig config;
 		config.MergeMode = true;
 		io.Fonts->AddFontDefault();
@@ -161,7 +161,7 @@ void Application::Execute()
 
 		// ゲーム終了指定があるときはループ終了
 		if (m_endFlag)
-		{ 
+		{
 			break;
 		}
 
@@ -246,7 +246,9 @@ void Application::Execute()
 			baseTime = st;
 			count = 0;
 		}
-
+		char titleBarText[64];
+		sprintf_s(titleBarText, "SPACE RAID | FPS: %d", m_fps);
+		SetWindowTextA(m_window.GetWndHandle(), titleBarText);
 	}
 
 	// ゲーム解放

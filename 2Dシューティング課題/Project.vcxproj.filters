@@ -85,6 +85,15 @@
     <Filter Include="Src\Application\UI">
       <UniqueIdentifier>{bc3d5f05-4688-46c6-aa24-c57e74a7586a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Stsge\GameStage">
+      <UniqueIdentifier>{6fe0abbc-2b8c-47f4-880c-06c92f5cef37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Stsge\TitleStage">
+      <UniqueIdentifier>{297ef0d9-be8a-4247-9697-fe608b541520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\BaseObject\Explosion">
+      <UniqueIdentifier>{31f3fd18-1c82-4587-bb75-7fb39c8180d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -213,9 +222,6 @@
     <ClInclude Include="Src\Application\BaseObject\Bullet\Bullet.h">
       <Filter>Src\Application\BaseObject\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Stage\Stage.h">
-      <Filter>Src\Application\Stsge</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\BaseObject\Bullet\PlayerBullet\PlayerBullet.h">
       <Filter>Src\Application\BaseObject\Bullet\PlayerBuller</Filter>
     </ClInclude>
@@ -227,6 +233,18 @@
     </ClInclude>
     <ClInclude Include="Src\Application\UI\UI.h">
       <Filter>Src\Application\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Stage\GameStage\Stage.h">
+      <Filter>Src\Application\Stsge\GameStage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Stage\TitleStage\TitleStage.h">
+      <Filter>Src\Application\Stsge\TitleStage</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\BaseObject\Explosion\Explosion.h">
+      <Filter>Src\Application\BaseObject\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\BaseObject\Enemies\EnemyManager.h">
+      <Filter>Src\Application\BaseObject\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -326,9 +344,6 @@
     <ClCompile Include="Src\Application\BaseObject\Bullet\Bullet.cpp">
       <Filter>Src\Application\BaseObject\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Stage\Stage.cpp">
-      <Filter>Src\Application\Stsge</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Application\BaseObject\Bullet\PlayerBullet\PlayerBullet.cpp">
       <Filter>Src\Application\BaseObject\Bullet\PlayerBuller</Filter>
     </ClCompile>
@@ -340,6 +355,18 @@
     </ClCompile>
     <ClCompile Include="Src\Application\UI\UI.cpp">
       <Filter>Src\Application\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Stage\GameStage\Stage.cpp">
+      <Filter>Src\Application\Stsge\GameStage</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Stage\TitleStage\TitleStage.cpp">
+      <Filter>Src\Application\Stsge\TitleStage</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\BaseObject\Explosion\Explosion.cpp">
+      <Filter>Src\Application\BaseObject\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\BaseObject\Enemies\EnemyManager.cpp">
+      <Filter>Src\Application\BaseObject\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

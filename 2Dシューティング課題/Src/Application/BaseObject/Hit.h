@@ -1,4 +1,5 @@
 #pragma once
+#include "Explosion/Explosion.h"
 
 class BaseObject;
 
@@ -15,6 +16,7 @@ public:
 private:
 	// 個別の判定ロジック
 	void CheckCollision(std::shared_ptr<BaseObject> objA, std::shared_ptr<BaseObject> objB, std::vector<std::shared_ptr<BaseObject>>& objList);
+
 
 	int m_totalScore = 0;
 	int m_lastHealScore = 0; //最後に回復した時のスコアを記録

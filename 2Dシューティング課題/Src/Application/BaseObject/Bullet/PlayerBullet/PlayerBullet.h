@@ -4,7 +4,13 @@
 class PlayerBullet : public Bullet
 {
 public:
-	PlayerBullet() { Init(); } // コンストラクタで自機弾用のInitを呼ぶ
+
+	PlayerBullet() { Init(); }
+
+	void Update(std::vector<std::shared_ptr<BaseObject>>& objList) override;
+
 private:
+
 	void Init() override;
+
 };

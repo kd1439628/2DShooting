@@ -1,9 +1,10 @@
 #pragma once
 
 #include "../BaseScene.h"
-#include "../../Stage/Stage.h"
+#include "../../Stage/GameStage/Stage.h"
 #include "../../BaseObject/Hit.h"
 #include "../../UI/UI.h"
+#include "../../BaseObject/Enemies/EnemyManager.h"
 
 class BaseObject;
 
@@ -28,8 +29,12 @@ private:
 	std::unique_ptr<Hit> m_hitChecker = std::make_unique<Hit>();
 	std::shared_ptr<UI> m_ui = nullptr;
 
-	int m_spawnTimer = 0;       // 次の敵が出るまでのカウントダウン
-	int m_maxEnemyCount = 10;   // 画面内に同時に存在できる敵の上限
+	int m_gameoverTimer = 60; // ゲームオーバー画面に行くまでの猶予
 
+	std::unique_ptr<EnemyManager> m_enemyManager = nullptr;
+	int m_sceneTimer = 0;
+
+	bool m_prevJKey = false;
+	bool m_prevLKey = false;
 };
 

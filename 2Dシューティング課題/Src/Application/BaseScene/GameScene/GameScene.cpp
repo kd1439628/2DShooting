@@ -5,12 +5,14 @@
 
 #include "../../BaseObject/Player/Player.h"
 #include "../../BaseObject/Enemies/Enemy.h"
-#include "../../Stage/Stage.h"
+#include "../../Stage/GameStage/Stage.h"
+#include "../../BaseObject/Explosion/Explosion.h"
 
 void GameScene::Draw()
 {
 	if (m_stage) { m_stage->Draw(); }
 
+	// キャラクター・弾などの通常の描画
 	for (auto& obj : m_objList)
 	{
 		obj->Draw();
@@ -21,6 +23,54 @@ void GameScene::Draw()
 
 void GameScene::Update()
 {
+	m_sceneTimer++;
+
+	// 3分(180秒) ＋ 余韻(2秒) ＝ 10920フレーム経過したら終了
+	if (m_sceneTimer >= 10920)
+	{
+		// 1. 現在のスコアをUIから取得する
+		unsigned long finalScore = 0;
+		if (m_ui)
+		{
+			finalScore = m_ui->GetScore();
+		}
+
+		// 2.ボス戦ではなく、スコアを表示するシーン（GameoverScene）へ遷移する
+		// 引数に取得したスコアを渡すことで、画面に最終結果が表示されます
+		SceneManager::Instance().SetNextScene(std::make_shared<GameoverScene>(finalScore));
+
+		return; // 以降の更新処理を中断
+	}
+
+	std::shared_ptr<Player> playerPtr = nullptr;
+	for (auto& obj : m_objList)
+	{
+		auto p = std::dynamic_pointer_cast<Player>(obj);
+		if (p)
+		{
+			playerPtr = p;
+			break;
+		}
+	}
+
+	// プレイヤーがリストにいない、または死亡フラグが立っていたらゲームオーバー
+	if (!playerPtr || !playerPtr->IsAlive())
+	{
+		// ★ タイマーを減らす
+		m_gameoverTimer--;
+
+		// ★ タイマーが0になったらシーンを切り替える
+		if (m_gameoverTimer <= 0)
+		{
+			unsigned long finalScore = 0;
+			if (m_ui)
+			{
+				finalScore = m_ui->GetScore();
+			}
+			SceneManager::Instance().SetNextScene(std::make_shared<GameoverScene>(finalScore, m_sceneTimer, 0));
+		}
+	}
+
 	// ステージの更新
 	if (m_stage) { m_stage->Update(); }
 
@@ -43,23 +93,82 @@ void GameScene::Update()
 
 	if (m_ui) { m_ui->Update(); }
 
-	bool currentZKeyState = (GetAsyncKeyState('Z') & 0x8000);
-	// 「前回は押されていなくて、今回は押されている」時だけ実行
-	if (currentZKeyState && !m_prevZKey)
-	{
-		SceneManager::Instance().SetNextScene(std::make_shared<BossScene>());
-	}
-	// 次のフレームのために現在の状態を保存
-	m_prevZKey = currentZKeyState;
+	//bool currentZKeyState = (GetAsyncKeyState('Z') & 0x8000);
+	//// 「前回は押されていなくて、今回は押されている」時だけ実行
+	//if (currentZKeyState && !m_prevZKey)
+	//{
+	//	SceneManager::Instance().SetNextScene(std::make_shared<BossScene>());
+	//}
+	//// 次のフレームのために現在の状態を保存
+	//m_prevZKey = currentZKeyState;
 
 
 	bool currentXKeyState = (GetAsyncKeyState('X') & 0x8000);
 	if (currentXKeyState && !m_prevXKey)
 	{
-		SceneManager::Instance().SetNextScene(std::make_shared<GameoverScene>());
+		// UIから現在のスコアを取得
+		unsigned long currentScore = 0;
+		if (m_ui)
+		{
+			currentScore = m_ui->GetScore();
+		}
+
+		// GameoverScene に「現在のスコア」と「現在の経過時間(m_sceneTimer)」を渡して遷移する
+		// （第3引数は被弾回数ですが、今回はとりあえず 0 を渡しています）
+		SceneManager::Instance().SetNextScene(std::make_shared<GameoverScene>(currentScore, m_sceneTimer, 0));
 	}
 	m_prevXKey = currentXKeyState;
 
+	bool currentJKeyState = (GetAsyncKeyState('J') & 0x8000);
+	if (currentJKeyState && !m_prevJKey)
+	{
+		m_sceneTimer -= 600;
+		if (m_sceneTimer < 0) m_sceneTimer = 0;
+
+		// 敵とUIの時間を戻す
+		if (m_enemyManager) m_enemyManager->AddTime(-600);
+		if (m_ui) m_ui->AddTime(-600);
+
+		// ★ 画面上の敵や弾をリセット（プレイヤー以外を削除）
+		auto it = m_objList.begin();
+		while (it != m_objList.end())
+		{
+			// Playerで「ない」場合はリストから消去
+			if (!std::dynamic_pointer_cast<Player>(*it)) {
+				it = m_objList.erase(it);
+			}
+			else {
+				++it;
+			}
+		}
+	}
+	m_prevJKey = currentJKeyState;
+
+
+	// ▼ Lキーで10秒先送り (600フレーム)
+	bool currentLKeyState = (GetAsyncKeyState('L') & 0x8000);
+	if (currentLKeyState && !m_prevLKey)
+	{
+		m_sceneTimer += 600;
+
+		// 敵とUIの時間を進める
+		if (m_enemyManager) m_enemyManager->AddTime(600);
+		if (m_ui) m_ui->AddTime(600);
+
+		// ★ 画面上の敵や弾をリセット（プレイヤー以外を削除）
+		auto it = m_objList.begin();
+		while (it != m_objList.end())
+		{
+			// Playerで「ない」場合はリストから消去
+			if (!std::dynamic_pointer_cast<Player>(*it)) {
+				it = m_objList.erase(it);
+			}
+			else {
+				++it;
+			}
+		}
+	}
+	m_prevLKey = currentLKeyState;
 
 	// ---  UIへのHP反映と回復実行 ---
 	// リストからPlayerを見つけて、HP情報をUIに送る
@@ -73,74 +182,19 @@ void GameScene::Update()
 	}
 
 	// --- 敵の出現管理 ---
-	if (m_spawnTimer > 0)
+	if (m_enemyManager)
 	{
-		m_spawnTimer--;
-	}
-	else
-	{
-		// 1. 画面内の現在の敵の数を数える
-		int currentEnemies = 0;
-		for (auto& obj : m_objList) {
-			if (std::dynamic_pointer_cast<Enemy>(obj)) currentEnemies++;
-		}
-
-		// 2. 上限に達していなければ生成を試みる
-		if (currentEnemies < m_maxEnemyCount)
-		{
-			auto newEnemy = std::make_shared<Enemy>();
-
-			// 重なりチェック（最大5回リトライ）
-			bool isOverlapping = false;
-			for (int retry = 0; retry < 5; ++retry)
-			{
-				isOverlapping = false;
-				// Enemy::Initでランダム座標が決まるので、それをチェック
-				for (auto& obj : m_objList)
-				{
-					auto otherEnemy = std::dynamic_pointer_cast<Enemy>(obj);
-					if (otherEnemy)
-					{
-						// 新しい敵と既存の敵の距離を計算（Vector3の距離）
-						float dist = (newEnemy->GetPos() - otherEnemy->GetPos()).Length();
-						if (dist < 150.0f) // 150px以内なら「重なっている」とみなす
-						{
-							isOverlapping = true;
-							break;
-						}
-					}
-				}
-
-				if (!isOverlapping) break; // 重なっていなければループを抜ける
-
-				// 重なっていたらInitを呼び直して座標を再抽選
-				newEnemy->Relocate();
-			}
-
-			// 最終的に重なっていなければリストに追加
-			if (!isOverlapping)
-			{
-				m_objList.push_back(newEnemy);
-				// 次の出現までの待ち時間を設定（60フレーム = 1秒など）
-				m_spawnTimer = 70 + rand() % 50;
-			}
-		}
-	}
-
-	//当たり判定の実行
-	if (m_hitChecker)
-	{
-		m_hitChecker->AllCollision(m_objList);
+		m_enemyManager->Update(m_objList);
 	}
 
 	// --- 2. 不要なオブジェクトの削除 (erase-removeイディオム) ---
-	// 生存フラグが false のものを一括で削除します。
+	// 生存フラグが false のものを一括で削除
 	auto it = m_objList.begin();
 	while (it != m_objList.end())
 	{
 		if (!(*it)->IsAlive())
 		{
-			it = m_objList.erase(it); // ここでPlayerがリストから消える
+			it = m_objList.erase(it); // リストから完全に消去
 		}
 		else
 		{
@@ -165,9 +219,8 @@ void GameScene::Init()
 	m_ui = std::make_shared<UI>();
 	m_ui->SetPlayer(player); // UIにプレイヤーを教える
 
-
-	m_spawnTimer = 60;
-	m_maxEnemyCount = 10;
+	m_enemyManager = std::make_unique<EnemyManager>();
+	m_enemyManager->LoadTimeline("Textures/TextDate/SpawnData.txt");
 }
 
 void GameScene::Release()

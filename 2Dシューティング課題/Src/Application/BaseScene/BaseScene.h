@@ -22,6 +22,8 @@ protected:
 	bool m_prevReturnKey = false;
 	bool m_prevZKey = false;
 	bool m_prevXKey = false;
+	bool m_prevIKey = false;
+	bool m_prevDKey = false;
 
 };
 
